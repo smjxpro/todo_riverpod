@@ -15,7 +15,6 @@ abstract class TodoLocalDataSource {
 }
 
 class TodoLocalDataSourceImpl implements TodoLocalDataSource {
-  String dbPath = 'todo.db';
   DatabaseFactory dbFactory = databaseFactoryIo;
 
   @override
@@ -25,10 +24,13 @@ class TodoLocalDataSourceImpl implements TodoLocalDataSource {
     var store = StoreRef.main();
 
     var key = await store.add(db, todo.toMap());
-    var record = await store.record(key).get(db)
-        as RecordSnapshot<int, Map<String, dynamic>>;
+    var record = await store.record(key).get(db) as Map<String, dynamic>;
 
-    return Todo.fromMap(record.value);
+    final newTodo = Todo.fromMap(record);
+
+    newTodo.id = key as int;
+
+    return newTodo;
   }
 
   @override
@@ -66,6 +68,7 @@ class TodoLocalDataSourceImpl implements TodoLocalDataSource {
   }
 
   Future<String> _getDatabasePath() async {
+    String dbPath = 'todo.db';
     final dir = await getApplicationDocumentsDirectory();
 
     return dir.path + dbPath;

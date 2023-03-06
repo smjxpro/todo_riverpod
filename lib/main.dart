@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_riverpod/presentation/todo_list_page.dart';
+import 'package:todo_riverpod/presentation/views/todo_list_page.dart';
 
-import 'presentation/add_todo_page.dart';
+import 'presentation/views/add_todo_page.dart';
 
 void main() {
   runApp(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_riverpod/domain/entities/todo.dart';
-import 'package:todo_riverpod/presentation/todo_provider.dart';
+import 'package:todo_riverpod/presentation/providers/todo_provider.dart';
 
 class AddTodoPage extends ConsumerWidget {
   AddTodoPage({Key? key}) : super(key: key);
@@ -30,12 +30,12 @@ class AddTodoPage extends ConsumerWidget {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () async {
-                final todo = ref
-                    .read(todoAddProvider(Todo(title: _nameController.text)));
-                todo.whenData((value) {
-                  print(value.title);
-                  ref.refresh(todoListProvider);
-                });
+                await ref.read(todoListControllerProvider.notifier).addNewTodo(
+                      Todo(
+                        title: _nameController.text,
+                        isCompleted: false,
+                      ),
+                    );
                 Navigator.pop(context);
               },
               child: const Text('Add'),

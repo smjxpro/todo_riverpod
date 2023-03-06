@@ -15,15 +15,18 @@ class Todo {
     this.isCompleted = false,
     this.createdAt,
     this.updatedAt,
-  });
+  }) {
+    createdAt ??= DateTime.now();
+    updatedAt ??= DateTime.now();
+  }
 
   Map<String, dynamic> toMap() => {
         'id': id,
         'title': title,
         'description': description,
         'isCompleted': isCompleted,
-        'createdAt': createdAt,
-        'updatedAt': updatedAt,
+        'createdAt': createdAt?.toIso8601String(),
+        'updatedAt': updatedAt?.toIso8601String()
       };
 
   factory Todo.fromMap(Map<String, dynamic> map) => Todo(
@@ -31,8 +34,8 @@ class Todo {
         title: map['title'],
         description: map['description'],
         isCompleted: map['isCompleted'],
-        createdAt: map['createdAt'],
-        updatedAt: map['updatedAt'],
+        createdAt: DateTime.parse(map['createdAt']),
+        updatedAt: DateTime.parse(map['updatedAt']),
       );
 
   String toJson() => jsonEncode(toMap());
