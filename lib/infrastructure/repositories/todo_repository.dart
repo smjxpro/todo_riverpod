@@ -1,30 +1,38 @@
-import 'package:todo_riverpod/domain/entities/todo.dart';
-import 'package:todo_riverpod/domain/repositories/todo_repository.dart';
+import 'package:dartz/dartz.dart';
 
+import '../../core/failures/failures.dart';
+import '../../core/mixins/parser_mixin.dart';
+import '../../domain/entities/todo.dart';
+import '../../domain/repositories/todo_repository.dart';
 import '../data_sources/local_todo_source.dart';
 
-class TodoRepositoryImpl implements TodoRepository {
-  final TodoLocalDataSource localDataSource;
+class TodoRepositoryImpl with ParserMixin implements TodoRepository {
+  final TodoLocalSource localDataSource;
 
   TodoRepositoryImpl(this.localDataSource);
 
   @override
-  Future<Todo> addNewTodo(Todo todo) {
-    return localDataSource.addNewTodo(todo);
+  Future<Either<Failure, Todo>> add(Todo entity) {
+    return parse(localDataSource.add(entity));
   }
 
   @override
-  Future<void> deleteTodo(int id) {
-    return localDataSource.deleteTodo(id);
+  Future<Either<Failure, Unit>> delete(int id) {
+    return parse(localDataSource.delete(id));
   }
 
   @override
-  Future<List<Todo>> getTodos() {
-    return localDataSource.getTodos();
+  Future<Either<Failure, Todo>> get(int id) {
+    return parse(localDataSource.get(id));
   }
 
   @override
-  Future<void> updateTodo(Todo todo) {
-    return localDataSource.updateTodo(todo);
+  Future<Either<Failure, List<Todo>>> getAll() {
+    return parse(localDataSource.getAll());
+  }
+
+  @override
+  Future<Either<Failure, Unit>> update(Todo entity) {
+    return parse(localDataSource.update(entity));
   }
 }

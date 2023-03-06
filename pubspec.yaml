@@ -38,6 +38,9 @@ dependencies:
   flutter_riverpod: ^2.3.0
   sembast: ^3.4.0+6
   path_provider: ^2.0.13
+  dartz: ^0.10.1
+  intl: ^0.18.0
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:
