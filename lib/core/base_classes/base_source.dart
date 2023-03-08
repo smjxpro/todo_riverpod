@@ -1,17 +1,18 @@
 import 'package:dartz/dartz.dart';
 
-abstract class BaseSource<T> {
-  Future<List<T>> getAll();
+abstract class BaseSource<TEntity, TId> {
+  Future<List<TEntity>> getAll();
 
-  Future<T> get(int id);
+  Future<TEntity> get(TId id);
 
-  Future<T> add(T entity);
+  Future<TEntity> add(TEntity entity);
 
-  Future<Unit> update(T entity);
+  Future<Unit> update(TEntity entity);
 
-  Future<Unit> delete(int id);
+  Future<Unit> delete(TId id);
 }
 
-abstract class BaseRemoteSource<T> extends BaseSource<T> {}
+abstract class BaseRemoteSource<TEntity, TId>
+    extends BaseSource<TEntity, TId> {}
 
-abstract class BaseLocalSource<T> extends BaseSource<T> {}
+abstract class BaseLocalSource<TEntity, TId> extends BaseSource<TEntity, TId> {}

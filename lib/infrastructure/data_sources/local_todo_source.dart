@@ -7,7 +7,7 @@ import 'package:todo_riverpod/core/exceptions/api_exceptions.dart';
 import '../../core/base_classes/base_source.dart';
 import '../../domain/entities/todo.dart';
 
-abstract class TodoLocalSource extends BaseLocalSource<Todo> {}
+abstract class TodoLocalSource extends BaseLocalSource<Todo, int> {}
 
 class TodoLocalSourceImpl implements TodoLocalSource {
   DatabaseFactory dbFactory = databaseFactoryIo;
@@ -30,6 +30,8 @@ class TodoLocalSourceImpl implements TodoLocalSource {
 
   @override
   Future<Unit> delete(int id) async {
+    // throw NotFoundException();
+
     Database db = await dbFactory.openDatabase(await _getDatabasePath());
 
     var store = StoreRef.main();

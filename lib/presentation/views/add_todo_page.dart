@@ -30,13 +30,14 @@ class AddTodoPage extends ConsumerWidget {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () async {
+                Navigator.pop(context);
+
                 await ref.read(todoListControllerProvider.notifier).addNewTodo(
                       Todo(
                         title: _nameController.text,
                         isCompleted: false,
                       ),
                     );
-                Navigator.pop(context);
               },
               child: const Text('Add'),
             ),

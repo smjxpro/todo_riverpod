@@ -1,24 +1,20 @@
 import 'dart:convert';
 
-class Todo {
-  int? id;
+import 'package:todo_riverpod/core/base_classes/base_entity.dart';
+
+class Todo extends BaseEntity<int> {
   String title;
   String? description;
   bool isCompleted;
-  DateTime? createdAt;
-  DateTime? updatedAt;
 
   Todo({
-    this.id,
+    super.id,
     required this.title,
     this.description,
     this.isCompleted = false,
-    this.createdAt,
-    this.updatedAt,
-  }) {
-    createdAt ??= DateTime.now();
-    updatedAt ??= DateTime.now();
-  }
+    super.createdAt,
+    super.updatedAt,
+  });
 
   Map<String, dynamic> toMap() => {
         'id': id,

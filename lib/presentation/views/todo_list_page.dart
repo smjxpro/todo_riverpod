@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_riverpod/domain/entities/todo.dart';
+import 'package:todo_riverpod/core/extensions/date_time_extension.dart';
 import 'package:todo_riverpod/presentation/providers/todo_provider.dart';
 
 class TodoListPage extends ConsumerWidget {
@@ -8,13 +8,24 @@ class TodoListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen<AsyncValue<List<Todo>?>>(
-      todoListControllerProvider,
-      (_, state) => state.whenOrNull(
+    ref.listen<AsyncValue<void>>(
+      deleteTodoControllerProvider,
+      (pre, state) => state.whenOrNull(
+        data: (_) {
+          if (pre?.hasValue == true) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Todo deleted'),
+                backgroundColor: Colors.green,
+              ),
+            );
+          }
+        },
         error: (error, stackTrace) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(error.toString()),
+              backgroundColor: Colors.red,
             ),
           );
         },
@@ -43,16 +54,22 @@ class TodoListPage extends ConsumerWidget {
                               icon: const Icon(Icons.delete),
                               onPressed: () {
                                 ref
-                                    .read(todoListControllerProvider.notifier)
+                                    .read(deleteTodoControllerProvider.notifier)
                                     .deleteTodoById(todo.id!);
                               },
                             ),
                           ],
                         ),
+                        secondary: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(todo.updatedAt?.formattedDateTime ?? ''),
+                          ],
+                        ),
                         value: todo.isCompleted,
-                        onChanged: (value) {
+                        onChanged: (value) async {
                           todo.isCompleted = value!;
-                          ref
+                          await ref
                               .read(todoListControllerProvider.notifier)
                               .updateTodo(todo);
                         },
